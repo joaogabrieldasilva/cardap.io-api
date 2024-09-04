@@ -1,4 +1,17 @@
 services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cardap.io-api
+    ports:
+      - 8080:8080
+    environment:
+      DATASOURCE_URL: jdbc:postgresql://db:5432/cardap.io
+      DATASOURCE_USERNAME: joao
+      DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - db
   db:
     image: postgres
     ports:

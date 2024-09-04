@@ -3,6 +3,8 @@ package com.cardap.io.controllers;
 import com.cardap.io.dtos.req.auth.SignInReqDTO;
 import com.cardap.io.dtos.req.auth.SignUpReqDTO;
 import com.cardap.io.dtos.res.auth.AuthResDTO;
+import com.cardap.io.exceptions.InvalidEmailOrPasswordException;
+import com.cardap.io.exceptions.UserAlreadyExistsException;
 import com.cardap.io.models.User;
 import com.cardap.io.repositories.UserRepository;
 import com.cardap.io.security.TokenService;
@@ -33,7 +35,7 @@ public class AuthController {
     @PostMapping("/sign-in")
     public ResponseEntity<AuthResDTO> signIn(@RequestBody SignInReqDTO body) {
 
-        User user = this.userRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = this.userRepository.findByEmail(body.email()).orElseThrow(InvalidEmailOrPasswordException::new);
 
         if (passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = tokenService.generateToken(user);
@@ -49,7 +51,7 @@ public class AuthController {
         Optional<User> user = this.userRepository.findByEmail(body.email());
 
         if (user.isPresent()) {
-            throw new RuntimeException("A user with this e-mail already exists");
+            throw new UserAlreadyExistsException();
         }
 
         User newUser = new User();
