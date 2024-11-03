@@ -25,6 +25,7 @@ public class Establishment {
     private String phone;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "responsible_id")
     private User responsible;
 
 }
