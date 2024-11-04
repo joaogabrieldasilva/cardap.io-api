@@ -2,6 +2,7 @@ package com.cardap.io.security;
 
 import com.cardap.io.models.User;
 import com.cardap.io.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Component
+@AllArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
     private UserRepository userRepository;
 
     @Override

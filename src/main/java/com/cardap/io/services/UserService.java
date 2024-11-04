@@ -1,6 +1,6 @@
 package com.cardap.io.services;
 
-import com.cardap.io.dtos.res.auth.user.UserResDTO;
+import com.cardap.io.dtos.res.user.UserResDTO;
 
 public interface UserService {
 

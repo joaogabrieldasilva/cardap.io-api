@@ -49,4 +49,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(restException.getStatus()).body(restException);
     }
 
+    @ExceptionHandler(EstablishmentNotFoundException.class)
+    private ResponseEntity<RestException> establishmentNotFoundHandler(EstablishmentNotFoundException exception) {
+        RestException restException = new RestException(HttpStatus.NOT_FOUND, exception.getMessage());
+
+        return ResponseEntity.status(restException.getStatus()).body(restException);
+    }
+
+    @ExceptionHandler(DishNotFoundException.class)
+    private ResponseEntity<RestException> dishNotFoundHandler(DishNotFoundException exception) {
+        RestException restException = new RestException(HttpStatus.NOT_FOUND, exception.getMessage());
+
+        return ResponseEntity.status(restException.getStatus()).body(restException);
+    }
+
 }
