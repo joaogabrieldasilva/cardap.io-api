@@ -25,7 +25,7 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public Collection<DishResDTO> getEstablishmentDishes(Long establishmentId) {
-        return dishRepository.findDishByEstablishmentId(establishmentId).stream().map(dish -> new DishResDTO(dish.getId(), dish.getName(), dish.getDescription())).toList();
+        return dishRepository.findDishByEstablishmentId(establishmentId).stream().map(dish -> new DishResDTO(dish.getId(), dish.getName(), dish.getDescription(), dish.getPrice())).toList();
     }
 
     @Override
@@ -36,12 +36,13 @@ public class DishServiceImpl implements DishService {
         Dish dish = Dish.builder()
                 .name(dto.name())
                 .description(dto.description())
+                .price(dto.price())
                 .establishment(establishment)
                 .build();
 
         Dish createdDish = dishRepository.save(dish);
 
-        return new DishResDTO(createdDish.getId(), createdDish.getName(), createdDish.getDescription());
+        return new DishResDTO(createdDish.getId(), createdDish.getName(), createdDish.getDescription(), createdDish.getPrice());
     }
 
     @Override
@@ -51,9 +52,10 @@ public class DishServiceImpl implements DishService {
 
         dto.name().ifPresent(dish::setName);
         dto.description().ifPresent(dish::setDescription);
+        dto.price().ifPresent(dish::setPrice);
 
         dishRepository.save(dish);
 
-        return new DishResDTO(dish.getId(), dish.getName(), dish.getDescription());
+        return new DishResDTO(dish.getId(), dish.getName(), dish.getDescription(), dish.getPrice());
     }
 }
