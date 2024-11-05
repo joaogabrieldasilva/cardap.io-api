@@ -4,7 +4,6 @@ import com.cardap.io.dtos.res.user.UserResDTO;
 import com.cardap.io.models.User;
 import com.cardap.io.services.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;

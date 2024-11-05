@@ -45,9 +45,9 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public DishResDTO updateDish(UpdateDishReqDTO dto) {
+    public DishResDTO updateDish(Long dishId, UpdateDishReqDTO dto) {
 
-        Dish dish = dishRepository.findById(dto.dishId()).orElseThrow(DishNotFoundException::new);
+        Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
 
         dto.name().ifPresent(dish::setName);
         dto.description().ifPresent(dish::setDescription);

@@ -8,8 +8,6 @@ import com.cardap.io.models.User;
 import com.cardap.io.services.DishService;
 import com.cardap.io.services.EstablishmentService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,15 +25,14 @@ public class EstablishmentController {
 
     private DishService dishService;
 
-
     @GetMapping("/{establishmentId}")
     public ResponseEntity<EstablishmentResDTO> findEstablishmentById(@PathVariable Long establishmentId){
         return ResponseEntity.ok(establishmentService.findById(establishmentId));
-    };
+    }
 
     @PostMapping
     public ResponseEntity<EstablishmentResDTO> createEstablishment(@AuthenticationPrincipal User user, @RequestBody CreateEstablishmentReqDTO body) {
-        return new ResponseEntity<EstablishmentResDTO>(establishmentService.create(user.getId(), body), HttpStatus.CREATED);
+        return new ResponseEntity<>(establishmentService.create(user.getId(), body), HttpStatus.CREATED);
     }
 
     @PutMapping("{establishmentId}")

@@ -12,5 +12,5 @@ public interface DishService {
 
     DishResDTO createDish(CreateDishReqDTO dto);
 
-    DishResDTO updateDish(UpdateDishReqDTO dto);
+    DishResDTO updateDish(Long dishId, UpdateDishReqDTO dto);
 }

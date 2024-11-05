@@ -5,7 +5,6 @@ import com.cardap.io.dtos.req.dish.UpdateDishReqDTO;
 import com.cardap.io.dtos.res.dish.DishResDTO;
 import com.cardap.io.services.DishService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +22,8 @@ public class DishController {
     }
 
     @PutMapping("{dishId}")
-    public ResponseEntity<DishResDTO> createDish(@RequestBody UpdateDishReqDTO dto) {
-        return ResponseEntity.ok(dishService.updateDish(dto));
+    public ResponseEntity<DishResDTO> createDish(@PathVariable Long dishId, @RequestBody UpdateDishReqDTO dto) {
+        return ResponseEntity.ok(dishService.updateDish(dishId, dto));
     }
 
 }
