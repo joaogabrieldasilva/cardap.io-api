@@ -3,6 +3,8 @@ package com.cardap.io.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
+
 @Table(name = "dishes")
 @Entity
 @Getter
@@ -24,5 +26,10 @@ public class Dish {
     @JoinColumn(name = "establishment_id")
     private Establishment establishment;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "dish")
+    private Collection<Ingredient> ingredients;
+
     private Double price;
+
+
 }

@@ -63,4 +63,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(restException.getStatus()).body(restException);
     }
 
+    @ExceptionHandler(IngredientNotFoundException.class)
+    private ResponseEntity<RestException> ingredientNotFoundHandler(IngredientNotFoundException exception) {
+        RestException restException = new RestException(HttpStatus.NOT_FOUND, exception.getMessage());
+
+        return ResponseEntity.status(restException.getStatus()).body(restException);
+    }
+
 }

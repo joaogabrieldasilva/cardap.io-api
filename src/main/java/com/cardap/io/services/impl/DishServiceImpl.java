@@ -7,6 +7,7 @@ import com.cardap.io.exceptions.DishNotFoundException;
 import com.cardap.io.exceptions.EstablishmentNotFoundException;
 import com.cardap.io.models.Dish;
 import com.cardap.io.models.Establishment;
+import com.cardap.io.models.Ingredient;
 import com.cardap.io.repositories.DishRepository;
 import com.cardap.io.repositories.EstablishmentRepository;
 import com.cardap.io.services.DishService;
@@ -19,43 +20,52 @@ import java.util.Collection;
 @AllArgsConstructor
 public class DishServiceImpl implements DishService {
 
-    private DishRepository dishRepository;
+  private DishRepository dishRepository;
 
-    private EstablishmentRepository establishmentRepository;
+  private EstablishmentRepository establishmentRepository;
 
-    @Override
-    public Collection<DishResDTO> getEstablishmentDishes(Long establishmentId) {
-        return dishRepository.findDishByEstablishmentId(establishmentId).stream().map(dish -> new DishResDTO(dish.getId(), dish.getName(), dish.getDescription(), dish.getPrice())).toList();
-    }
+  @Override
+  public Collection<DishResDTO> getEstablishmentDishes(Long establishmentId) {
+    return dishRepository.findDishByEstablishmentId(establishmentId).stream().map(dish -> new DishResDTO(dish.getId(), dish.getName(), dish.getDescription(), dish.getPrice())).toList();
+  }
 
-    @Override
-    public DishResDTO createDish(CreateDishReqDTO dto) {
+  @Override
+  public DishResDTO createDish(CreateDishReqDTO dto) {
 
-        Establishment establishment = establishmentRepository.findById(dto.establishmentId()).orElseThrow(EstablishmentNotFoundException::new);
+    Establishment establishment = establishmentRepository.findById(dto.establishmentId()).orElseThrow(EstablishmentNotFoundException::new);
 
-        Dish dish = Dish.builder()
-                .name(dto.name())
-                .description(dto.description())
-                .price(dto.price())
-                .establishment(establishment)
-                .build();
 
-        Dish createdDish = dishRepository.save(dish);
+    Collection<Ingredient> ingredients = dto.ingredients().stream().map(ingredient -> Ingredient.builder()
+            .name(ingredient.name())
+            .build()
+    ).toList();
 
-        return new DishResDTO(createdDish.getId(), createdDish.getName(), createdDish.getDescription(), createdDish.getPrice());
-    }
+    Dish dish = Dish.builder()
+            .name(dto.name())
+            .description(dto.description())
+            .price(dto.price())
+            .establishment(establishment)
+            .ingredients(ingredients)
+            .build();
 
-    @Override
-    public DishResDTO updateDish(Long dishId, UpdateDishReqDTO dto) {
+    ingredients.forEach(ingredient -> ingredient.setDish(dish));
 
-        Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
+    Dish createdDish = dishRepository.save(dish);
 
-        dto.name().ifPresent(dish::setName);
-        dto.description().ifPresent(dish::setDescription);
-        dto.price().ifPresent(dish::setPrice);
+    return new DishResDTO(createdDish.getId(), createdDish.getName(), createdDish.getDescription(), createdDish.getPrice());
+  }
 
-        dishRepository.save(dish);
+  @Override
+  public DishResDTO updateDish(Long dishId, UpdateDishReqDTO dto) {
 
-        return new DishResDTO(dish.getId(), dish.getName(), dish.getDescription(), dish.getPrice());
-    }
+    Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
+
+    dto.name().ifPresent(dish::setName);
+    dto.description().ifPresent(dish::setDescription);
+    dto.price().ifPresent(dish::setPrice);
+
+    dishRepository.save(dish);
+
+    return new DishResDTO(dish.getId(), dish.getName(), dish.getDescription(), dish.getPrice());
+  }
 }
