@@ -1,6 +1,7 @@
 package com.cardap.io.controllers;
 
 import com.cardap.io.dtos.req.establishment.CreateEstablishmentReqDTO;
+import com.cardap.io.dtos.req.establishment.UpdateEstablishmentDescriptionReqDTO;
 import com.cardap.io.dtos.req.establishment.UpdateEstablishmentReqDTO;
 import com.cardap.io.dtos.res.dish.DishResDTO;
 import com.cardap.io.dtos.res.establishment.EstablishmentResDTO;
@@ -50,4 +51,12 @@ public class EstablishmentController {
     public ResponseEntity<Collection<DishResDTO>> getEstablishmentDishes(@PathVariable Long establishmentId) {
         return ResponseEntity.ok(dishService.getEstablishmentDishes(establishmentId));
     }
+
+    @PatchMapping("{establishmentId}/description")
+    public ResponseEntity<?> updateEstablishmentDescription(@PathVariable Long establishmentId, @RequestBody UpdateEstablishmentDescriptionReqDTO body) {
+        establishmentService.updateDescription(establishmentId, body);
+
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.cardap.io.services.impl;
 
 import com.cardap.io.dtos.req.establishment.CreateEstablishmentReqDTO;
+import com.cardap.io.dtos.req.establishment.UpdateEstablishmentDescriptionReqDTO;
 import com.cardap.io.dtos.req.establishment.UpdateEstablishmentReqDTO;
 import com.cardap.io.dtos.res.establishment.EstablishmentResDTO;
 import com.cardap.io.exceptions.EstablishmentNotFoundException;
@@ -54,6 +55,15 @@ public class EstablishmentServiceImpl implements EstablishmentService {
                 establishment.getAddress(),
                 establishment.getPhone()
         );
+    }
+
+    @Override
+    public void updateDescription(Long establishmentId, UpdateEstablishmentDescriptionReqDTO dto) {
+        Establishment establishment = establishmentRepository.findById(establishmentId).orElseThrow(EstablishmentNotFoundException::new);
+
+        establishment.setDescription(dto.description());
+
+        establishmentRepository.save(establishment);
     }
 
     @Override

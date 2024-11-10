@@ -26,4 +26,5 @@ public class Establishment {
     @JoinColumn(name = "responsible_id")
     private User responsible;
 
+    private String description;
 }
