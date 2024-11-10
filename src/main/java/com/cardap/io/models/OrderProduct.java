@@ -18,15 +18,23 @@ public class OrderProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_item_id")
-    private OrderItem orderItem;
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "order_products_ingredients",
+            joinColumns = @JoinColumn(name = "order_product_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
     private Collection<Ingredient> ingredients;
 
-    private Double price;
+    private int quantity;
 
 
 }
