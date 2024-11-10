@@ -19,6 +19,6 @@ public class Ingredient {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dish_id")
-    private Dish dish;
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

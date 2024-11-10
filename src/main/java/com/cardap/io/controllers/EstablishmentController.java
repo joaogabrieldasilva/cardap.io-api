@@ -3,11 +3,11 @@ package com.cardap.io.controllers;
 import com.cardap.io.dtos.req.establishment.CreateEstablishmentReqDTO;
 import com.cardap.io.dtos.req.establishment.UpdateEstablishmentDescriptionReqDTO;
 import com.cardap.io.dtos.req.establishment.UpdateEstablishmentReqDTO;
-import com.cardap.io.dtos.res.dish.DishResDTO;
+import com.cardap.io.dtos.res.product.ProductResDTO;
 import com.cardap.io.dtos.res.establishment.EstablishmentResDTO;
 import com.cardap.io.models.User;
-import com.cardap.io.services.DishService;
 import com.cardap.io.services.EstablishmentService;
+import com.cardap.io.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class EstablishmentController {
 
     private EstablishmentService establishmentService;
 
-    private DishService dishService;
+    private ProductService productService;
 
     @GetMapping("/{establishmentId}")
     public ResponseEntity<EstablishmentResDTO> findEstablishmentById(@PathVariable Long establishmentId){
@@ -47,9 +47,9 @@ public class EstablishmentController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("{establishmentId}/dishes")
-    public ResponseEntity<Collection<DishResDTO>> getEstablishmentDishes(@PathVariable Long establishmentId) {
-        return ResponseEntity.ok(dishService.getEstablishmentDishes(establishmentId));
+    @GetMapping("{establishmentId}/products")
+    public ResponseEntity<Collection<ProductResDTO>> getEstablishmentDishes(@PathVariable Long establishmentId) {
+        return ResponseEntity.ok(productService.getEstablishmentDishes(establishmentId));
     }
 
     @PatchMapping("{establishmentId}/description")

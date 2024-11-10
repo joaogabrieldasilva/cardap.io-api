@@ -5,9 +5,9 @@ import com.cardap.io.dtos.req.ingredient.UpdateIngredientReqDTO;
 import com.cardap.io.dtos.res.ingredient.IngredientResDTO;
 import com.cardap.io.exceptions.DishNotFoundException;
 import com.cardap.io.exceptions.IngredientNotFoundException;
-import com.cardap.io.models.Dish;
+import com.cardap.io.models.Product;
 import com.cardap.io.models.Ingredient;
-import com.cardap.io.repositories.DishRepository;
+import com.cardap.io.repositories.ProductRepository;
 import com.cardap.io.repositories.IngredientRepository;
 import com.cardap.io.services.IngredientService;
 import lombok.AllArgsConstructor;
@@ -19,16 +19,16 @@ public class IngredientServiceImpl implements IngredientService {
 
   private IngredientRepository ingredientRepository;
 
-  private DishRepository dishRepository;
+  private ProductRepository productRepository;
 
   @Override
   public IngredientResDTO createDishIngredient(AddIngredientDishReqDTO dto) {
 
-    Dish dish = dishRepository.findById(dto.dishId()).orElseThrow(DishNotFoundException::new);
+    Product product = productRepository.findById(dto.dishId()).orElseThrow(DishNotFoundException::new);
 
     Ingredient ingredient = Ingredient.builder()
             .name(dto.name())
-            .dish(dish)
+            .product(product)
             .build();
 
     Ingredient createdIngredient = ingredientRepository.save(ingredient);

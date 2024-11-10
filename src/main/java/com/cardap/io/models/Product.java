@@ -5,14 +5,14 @@ import lombok.*;
 
 import java.util.Collection;
 
-@Table(name = "dishes")
+@Table(name = "products")
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Dish {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Dish {
     @JoinColumn(name = "establishment_id")
     private Establishment establishment;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "dish")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
     private Collection<Ingredient> ingredients;
 
     private Double price;

@@ -1,0 +1,29 @@
+package com.cardap.io.controllers;
+
+import com.cardap.io.dtos.req.product.CreateProductReqDTO;
+import com.cardap.io.dtos.req.product.UpdateProductReqDTO;
+import com.cardap.io.dtos.res.product.ProductResDTO;
+import com.cardap.io.services.ProductService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/products")
+@AllArgsConstructor
+public class ProductController {
+
+    private ProductService productService;
+
+    @PostMapping
+    public ResponseEntity<ProductResDTO> createProduct(@RequestBody CreateProductReqDTO dto) {
+        return new ResponseEntity<ProductResDTO>(productService.createProduct(dto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("{productId}")
+    public ResponseEntity<ProductResDTO> createProduct(@PathVariable Long productId, @RequestBody UpdateProductReqDTO dto) {
+        return ResponseEntity.ok(productService.updateProduct(productId, dto));
+    }
+
+}
