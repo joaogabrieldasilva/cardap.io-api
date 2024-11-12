@@ -54,6 +54,7 @@ public class OrderServiceImpl implements OrderService {
             .orderProducts(orderProducts)
             .user(user)
             .establishment(establishment)
+            .paymentMethod(dto.paymentMethod())
             .build();
 
     orderProducts.forEach(orderProduct -> orderProduct.setOrder(order));
