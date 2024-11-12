@@ -18,8 +18,6 @@ public class Establishment {
 
     private String name;
 
-    private String address;
-
     private String phone;
 
     @ManyToOne(fetch = FetchType.LAZY)

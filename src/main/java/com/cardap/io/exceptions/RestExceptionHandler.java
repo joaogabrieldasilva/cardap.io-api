@@ -1,5 +1,6 @@
 package com.cardap.io.exceptions;
 
+import com.cardap.io.models.EstablishmentAddress;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -70,4 +71,24 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(restException.getStatus()).body(restException);
     }
 
+    @ExceptionHandler(EstablishmentAddressNotFoundException.class)
+    private ResponseEntity<RestException> establishmentAddressNotFoundHandler(EstablishmentAddressNotFoundException exception) {
+        RestException restException = new RestException(HttpStatus.NOT_FOUND, exception.getMessage());
+
+        return ResponseEntity.status(restException.getStatus()).body(restException);
+    }
+
+    @ExceptionHandler(UserAddressNotFoundException.class)
+    private ResponseEntity<RestException> userAddressNotFoundHandler(UserAddressNotFoundException exception) {
+        RestException restException = new RestException(HttpStatus.NOT_FOUND, exception.getMessage());
+
+        return ResponseEntity.status(restException.getStatus()).body(restException);
+    }
+
+    @ExceptionHandler(InvalidOrderShippingAddressException.class)
+    private ResponseEntity<RestException> invalidOrderShippingAddressIdHandler(InvalidOrderShippingAddressException exception) {
+        RestException restException = new RestException(HttpStatus.BAD_REQUEST, exception.getMessage());
+
+        return ResponseEntity.status(restException.getStatus()).body(restException);
+    }
 }

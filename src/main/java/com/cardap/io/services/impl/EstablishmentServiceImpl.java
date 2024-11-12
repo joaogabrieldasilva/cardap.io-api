@@ -3,17 +3,24 @@ package com.cardap.io.services.impl;
 import com.cardap.io.dtos.req.establishment.CreateEstablishmentReqDTO;
 import com.cardap.io.dtos.req.establishment.UpdateEstablishmentDescriptionReqDTO;
 import com.cardap.io.dtos.req.establishment.UpdateEstablishmentReqDTO;
+import com.cardap.io.dtos.req.establishmentAddress.CreateEstablishmentAddressReqDTO;
 import com.cardap.io.dtos.res.establishment.EstablishmentResDTO;
+import com.cardap.io.dtos.res.establishmentAddress.userAddress.EstablishmentAddressResDTO;
 import com.cardap.io.exceptions.EstablishmentNotFoundException;
 import com.cardap.io.exceptions.UserNotFoundException;
 import com.cardap.io.models.Establishment;
+import com.cardap.io.models.EstablishmentAddress;
 import com.cardap.io.models.User;
+import com.cardap.io.repositories.EstablishmentAddressRepository;
 import com.cardap.io.repositories.EstablishmentRepository;
 import com.cardap.io.repositories.UserRepository;
 import com.cardap.io.services.EstablishmentService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -23,21 +30,43 @@ public class EstablishmentServiceImpl implements EstablishmentService {
 
     private UserRepository userRepository;
 
+    private EstablishmentAddressRepository establishmentAddressRepository;
+
     @Override
+    @Transactional
     public EstablishmentResDTO create(Long responsibleId, CreateEstablishmentReqDTO dto) {
 
         User responsible = userRepository.findById(responsibleId).orElseThrow(UserNotFoundException::new);
 
+
         Establishment establishment = Establishment.builder()
                 .name(dto.name())
-                .address(dto.address())
                 .phone(dto.phone())
                 .responsible(responsible)
                 .build();
 
         Establishment createdEstablishment = establishmentRepository.save(establishment);
 
-        return new EstablishmentResDTO((long) createdEstablishment.getId(), createdEstablishment.getName(), createdEstablishment.getAddress(), createdEstablishment.getPhone());
+        CreateEstablishmentAddressReqDTO addressReqDTO = dto.address();
+
+        EstablishmentAddress createdAddress = establishmentAddressRepository.save(
+                EstablishmentAddress.builder()
+                        .establishment(establishment)
+                        .name(addressReqDTO.name())
+                        .street(addressReqDTO.street())
+                        .state(addressReqDTO.state())
+                        .country(addressReqDTO.country())
+                        .zipCode(addressReqDTO.zipCode())
+                        .number(addressReqDTO.number())
+                        .complement(addressReqDTO.complement().orElse(null))
+                        .reference(addressReqDTO.reference().orElse(null))
+                        .build()
+        );
+
+
+
+
+        return new EstablishmentResDTO(createdEstablishment.getId(),createdEstablishment.getName(), createdEstablishment.getPhone());
     }
 
     @Override
@@ -47,12 +76,10 @@ public class EstablishmentServiceImpl implements EstablishmentService {
 
         dto.name().ifPresent(establishment::setName);
         dto.phone().ifPresent(establishment::setPhone);
-        dto.address().ifPresent(establishment::setAddress);
 
         return new EstablishmentResDTO(
                 establishment.getId(),
                 establishment.getName(),
-                establishment.getAddress(),
                 establishment.getPhone()
         );
     }
@@ -73,7 +100,6 @@ public class EstablishmentServiceImpl implements EstablishmentService {
         return new EstablishmentResDTO(
                 establishment.getId(),
                 establishment.getName(),
-                establishment.getAddress(),
                 establishment.getPhone()
         );
     }

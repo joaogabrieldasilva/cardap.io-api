@@ -1,4 +1,6 @@
 package com.cardap.io.dtos.req.establishment;
 
-public record CreateEstablishmentReqDTO(String name, String address, String phone, Long responsibleId) {
+import com.cardap.io.dtos.req.establishmentAddress.CreateEstablishmentAddressReqDTO;
+
+public record CreateEstablishmentReqDTO(String name, CreateEstablishmentAddressReqDTO address, String phone, Long responsibleId) {
 }

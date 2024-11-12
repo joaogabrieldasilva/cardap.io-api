@@ -29,6 +29,16 @@ public class Order {
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
-  @Enumerated(EnumType.STRING)
-  private OrderPaymentMethod paymentMethod;
+  @Column(name = "payment_method", nullable = false)
+  private String paymentMethod;
+
+  private Boolean isForPickUp;
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "shipping_address_id", nullable = true)
+  private UserAddress shippingAddress;
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "pick_up_address_id", nullable = true)
+  private EstablishmentAddress pickUpAddress;
 }

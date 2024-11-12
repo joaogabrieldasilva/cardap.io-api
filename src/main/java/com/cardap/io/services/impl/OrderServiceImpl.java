@@ -3,12 +3,13 @@ package com.cardap.io.services.impl;
 import com.cardap.io.dtos.req.order.PlaceOrderReqDTO;
 import com.cardap.io.dtos.res.order.OrderResDTO;
 import com.cardap.io.dtos.res.orderProduct.OrderProductResDTO;
-import com.cardap.io.exceptions.EstablishmentNotFoundException;
-import com.cardap.io.exceptions.UserNotFoundException;
+import com.cardap.io.exceptions.*;
 import com.cardap.io.models.*;
 import com.cardap.io.repositories.*;
 import com.cardap.io.services.OrderService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -28,6 +29,12 @@ public class OrderServiceImpl implements OrderService {
   private UserRepository userRepository;
 
   private EstablishmentRepository establishmentRepository;
+
+  private EstablishmentAddressRepository establishmentAddressRepository;
+
+  private UserAddressRepository userAddressRepository;
+
+
 
   @Override
   public OrderResDTO placeOrder(Long userId, Long establishmentId, PlaceOrderReqDTO dto) {
@@ -50,12 +57,27 @@ public class OrderServiceImpl implements OrderService {
             .ingredients(ingredientRepository.findAllById(product.ingredientIds()))
             .build()).toList();
 
+
+
     Order order = Order.builder()
             .orderProducts(orderProducts)
             .user(user)
+            .isForPickUp(dto.isForPickUp())
             .establishment(establishment)
             .paymentMethod(dto.paymentMethod())
             .build();
+
+    if (dto.isForPickUp()) {
+      EstablishmentAddress pickUpAddress = establishmentAddressRepository.findByEstablishmentId(establishment.getId()).orElseThrow(EstablishmentAddressNotFoundException::new);
+      order.setPickUpAddress(pickUpAddress);
+    } else {
+      dto.shippingAddressId().ifPresentOrElse((shippingAddressId) -> {
+        UserAddress shippingAddress = userAddressRepository.findById(shippingAddressId).orElseThrow(UserAddressNotFoundException::new);
+        order.setShippingAddress(shippingAddress);
+      }, () -> {
+        throw new InvalidOrderShippingAddressException();
+      });
+    }
 
     orderProducts.forEach(orderProduct -> orderProduct.setOrder(order));
 

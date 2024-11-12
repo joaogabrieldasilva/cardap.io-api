@@ -1,0 +1,2 @@
+ALTER TABLE orders
+    ADD COLUMN is_for_pick_up BOOLEAN DEFAULT FALSE;
