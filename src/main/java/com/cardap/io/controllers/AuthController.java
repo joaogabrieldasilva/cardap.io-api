@@ -8,6 +8,7 @@ import com.cardap.io.exceptions.UserAlreadyExistsException;
 import com.cardap.io.models.User;
 import com.cardap.io.repositories.UserRepository;
 import com.cardap.io.security.TokenService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class AuthController {
 
 
     @PostMapping("/sign-in")
-    public ResponseEntity<AuthResDTO> signIn(@RequestBody SignInReqDTO body) {
+    public ResponseEntity<AuthResDTO> signIn(@Valid @RequestBody SignInReqDTO body) {
 
         User user = this.userRepository.findByEmail(body.email()).orElseThrow(InvalidEmailOrPasswordException::new);
 
@@ -47,7 +48,7 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<AuthResDTO> signUp(@RequestBody SignUpReqDTO body) {
+    public ResponseEntity<AuthResDTO> signUp(@Valid @RequestBody SignUpReqDTO body) {
         Optional<User> user = this.userRepository.findByEmail(body.email());
 
         if (user.isPresent()) {

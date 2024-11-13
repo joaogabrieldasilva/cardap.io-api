@@ -3,7 +3,7 @@ package com.cardap.io.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "users_addresses")
+@Table(name = "establishments_addresses")
 @Entity
 @Getter
 @Setter

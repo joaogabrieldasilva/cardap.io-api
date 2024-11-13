@@ -1,13 +1,13 @@
 package com.cardap.io.controllers;
 
 import com.cardap.io.dtos.req.establishment.CreateEstablishmentReqDTO;
-import com.cardap.io.dtos.req.establishment.UpdateEstablishmentDescriptionReqDTO;
 import com.cardap.io.dtos.req.establishment.UpdateEstablishmentReqDTO;
 import com.cardap.io.dtos.res.product.ProductResDTO;
 import com.cardap.io.dtos.res.establishment.EstablishmentResDTO;
 import com.cardap.io.models.User;
 import com.cardap.io.services.EstablishmentService;
 import com.cardap.io.services.ProductService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +32,12 @@ public class EstablishmentController {
     }
 
     @PostMapping
-    public ResponseEntity<EstablishmentResDTO> createEstablishment(@AuthenticationPrincipal User user, @RequestBody CreateEstablishmentReqDTO body) {
+    public ResponseEntity<EstablishmentResDTO> createEstablishment(@AuthenticationPrincipal User user, @Valid @RequestBody CreateEstablishmentReqDTO body) {
         return new ResponseEntity<>(establishmentService.create(user.getId(), body), HttpStatus.CREATED);
     }
 
     @PutMapping("{establishmentId}")
-    public ResponseEntity<EstablishmentResDTO> updateEstablishment(@PathVariable Long establishmentId, @RequestBody UpdateEstablishmentReqDTO body) {
+    public ResponseEntity<EstablishmentResDTO> updateEstablishment(@PathVariable Long establishmentId, @Valid @RequestBody UpdateEstablishmentReqDTO body) {
         return ResponseEntity.ok(establishmentService.update(establishmentId, body));
     }
 
@@ -50,13 +50,6 @@ public class EstablishmentController {
     @GetMapping("{establishmentId}/products")
     public ResponseEntity<Collection<ProductResDTO>> getEstablishmentDishes(@PathVariable Long establishmentId) {
         return ResponseEntity.ok(productService.getEstablishmentDishes(establishmentId));
-    }
-
-    @PatchMapping("{establishmentId}/description")
-    public ResponseEntity<?> updateEstablishmentDescription(@PathVariable Long establishmentId, @RequestBody UpdateEstablishmentDescriptionReqDTO body) {
-        establishmentService.updateDescription(establishmentId, body);
-
-        return ResponseEntity.ok().build();
     }
 
 }
