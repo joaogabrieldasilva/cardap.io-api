@@ -4,6 +4,7 @@ import com.cardap.io.dtos.req.order.PlaceOrderReqDTO;
 import com.cardap.io.dtos.res.order.OrderResDTO;
 import com.cardap.io.models.User;
 import com.cardap.io.services.OrderService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class OrderController {
 
 
   @PostMapping("/{establishmentId}/place")
-  public ResponseEntity<OrderResDTO> placeOrder(@PathVariable Long establishmentId, @AuthenticationPrincipal User user, @RequestBody PlaceOrderReqDTO body) {
+  public ResponseEntity<OrderResDTO> placeOrder(@PathVariable Long establishmentId, @AuthenticationPrincipal User user, @Valid @RequestBody PlaceOrderReqDTO body) {
 
     OrderResDTO order = orderService.placeOrder(user.getId(), establishmentId, body);
 

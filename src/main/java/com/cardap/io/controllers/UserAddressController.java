@@ -4,6 +4,7 @@ import com.cardap.io.dtos.req.userAddress.CreateUserAddressReqDTO;
 import com.cardap.io.dtos.res.userAddress.UserAddressResDTO;
 import com.cardap.io.models.User;
 import com.cardap.io.services.UserAddressService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +21,7 @@ public class UserAddressController {
   private UserAddressService userAddressService;
 
   @PostMapping
-  public ResponseEntity<UserAddressResDTO> createUserAddress(@AuthenticationPrincipal User user, @RequestBody CreateUserAddressReqDTO body) {
+  public ResponseEntity<UserAddressResDTO> createUserAddress(@AuthenticationPrincipal User user, @Valid @RequestBody CreateUserAddressReqDTO body) {
 
     UserAddressResDTO userAddressResDTO = userAddressService.createUserAddress(user.getId(), body);
 
