@@ -3,7 +3,7 @@ package com.cardap.io.services.impl;
 import com.cardap.io.dtos.req.product.CreateProductReqDTO;
 import com.cardap.io.dtos.req.product.UpdateProductReqDTO;
 import com.cardap.io.dtos.res.product.ProductResDTO;
-import com.cardap.io.exceptions.DishNotFoundException;
+import com.cardap.io.exceptions.ProductNotFoundException;
 import com.cardap.io.exceptions.EstablishmentNotFoundException;
 import com.cardap.io.models.Product;
 import com.cardap.io.models.Establishment;
@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductResDTO updateProduct(Long dishId, UpdateProductReqDTO dto) {
 
-    Product product = productRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
+    Product product = productRepository.findById(dishId).orElseThrow(ProductNotFoundException::new);
 
     dto.name().ifPresent(product::setName);
     dto.description().ifPresent(product::setDescription);

@@ -25,6 +25,8 @@ public class SecurityConfig {
 
     private SecurityFilter securityFilter;
 
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(httpExceptionHandler -> httpExceptionHandler.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
 

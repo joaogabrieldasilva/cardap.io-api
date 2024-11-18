@@ -1,9 +1,9 @@
 package com.cardap.io.services.impl;
 
-import com.cardap.io.dtos.req.ingredient.AddIngredientDishReqDTO;
+import com.cardap.io.dtos.req.ingredient.AddIngredientProductReqDTO;
 import com.cardap.io.dtos.req.ingredient.UpdateIngredientReqDTO;
 import com.cardap.io.dtos.res.ingredient.IngredientResDTO;
-import com.cardap.io.exceptions.DishNotFoundException;
+import com.cardap.io.exceptions.ProductNotFoundException;
 import com.cardap.io.exceptions.IngredientNotFoundException;
 import com.cardap.io.models.Product;
 import com.cardap.io.models.Ingredient;
@@ -22,9 +22,9 @@ public class IngredientServiceImpl implements IngredientService {
   private ProductRepository productRepository;
 
   @Override
-  public IngredientResDTO createDishIngredient(AddIngredientDishReqDTO dto) {
+  public IngredientResDTO createProductIngredient(AddIngredientProductReqDTO dto) {
 
-    Product product = productRepository.findById(dto.dishId()).orElseThrow(DishNotFoundException::new);
+    Product product = productRepository.findById(dto.productId()).orElseThrow(ProductNotFoundException::new);
 
     Ingredient ingredient = Ingredient.builder()
             .name(dto.name())
@@ -40,7 +40,7 @@ public class IngredientServiceImpl implements IngredientService {
   }
 
   @Override
-  public void updateDishIngredient(Long ingredientId, UpdateIngredientReqDTO dto) {
+  public void updateProductIngredient(Long ingredientId, UpdateIngredientReqDTO dto) {
     Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(IngredientNotFoundException::new);
 
     ingredient.setName(dto.name());
